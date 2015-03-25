@@ -61,6 +61,9 @@ class CitizenIdNumber {
 	);
 	*/
 	
+	
+	protected $errors = array();
+	
 	public function __construct($id = null){
 		if (!empty($id)){
 			$this->setId($id);
@@ -73,6 +76,7 @@ class CitizenIdNumber {
 		}
 		$this->idNumber = $id;
 		$this->idLength = strlen($id);
+		$this->errors = array();
 	}
 	
 	/**
@@ -128,6 +132,10 @@ class CitizenIdNumber {
 	}
 	
 	
+	public function getErrors(){
+		return $this->errors;
+	}
+	
 	
 	/**
 	 * 检查前6位的地区码是否存在
@@ -138,7 +146,12 @@ class CitizenIdNumber {
 		if (!class_exists('CityCode')){
 			include_once dirname(__FILE__) . '/CityCode.php';
 		}
-		return CityCode::isValidate($city);
+		if(!CityCode::isValidate($city)){
+			$this->errors[] = '地区代码不存在';
+			return false;
+		}
+		
+		return true;
 	}
 	
 	/**
@@ -146,7 +159,10 @@ class CitizenIdNumber {
 	 * @return boolean
 	 */
 	protected function checkScheme(){
-		if (!preg_match('/^([\d]{17}[xX\d]|[\d]{15})$/', $this->idNumber)) return false;
+		if (!preg_match('/^([\d]{17}[xX\d]|[\d]{15})$/', $this->idNumber)){
+			$this->errors[] = '号码格式错误';
+			return false;
+		}
 		return true;
 	}
 	
@@ -158,7 +174,11 @@ class CitizenIdNumber {
 		
 		$birthday = $this->getBirthday();
 		
-		return date('Ymd', strtotime($birthday)) == $birthday;
+		if (date('Ymd', strtotime($birthday)) !== $birthday){
+			$this->errors[] = '出身年月日不科学';
+			return false;
+		}
+		return true;
 	}
 	
 	
@@ -174,13 +194,20 @@ class CitizenIdNumber {
 		}
 		
 		$sum = 0;
+		
+		$number = (string) $this->idNumber;
+		
 		for ($i = 0; $i<17; $i++){
-			$sum += $this->idNumber{$i} * $this->salt[$i];
+			$sum += $number{$i} * $this->salt{$i};
 		}
 		
 		$seek =  $sum % 11;
 		
-		return $this->checksum[$seek] == strtoupper($this->idNumber{17});
+		if ((string)$this->checksum[$seek] !== strtoupper($number{17})){
+			$this->errors[] = '校验码错误';
+			return false;
+		}
+		return true;
 	}
 	
 	
