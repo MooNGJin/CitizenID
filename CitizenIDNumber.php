@@ -74,7 +74,7 @@ class CitizenIdNumber {
 		if (!$id){
 			throw new Exception('param $id must not none');
 		}
-		$this->idNumber = $id;
+		$this->idNumber = (string)$id;
 		$this->idLength = strlen($id);
 		$this->errors = array();
 	}
