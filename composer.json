@@ -1,0 +1,12 @@
+{
+    "name": "cszchen/citizenid",
+    "description": "中国居民身份证号码信息验证",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "cszchen",
+            "email": "csz@soyhw.com"
+        }
+    ],
+    "require": {}
+}
