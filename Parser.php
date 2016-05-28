@@ -123,9 +123,9 @@ class Parser
     }
 
     /**
-     * 获取性别码
+     * 获取性别
      * 
-     * @return string
+     * @return int
      */
     public function getGender()
     {
@@ -134,17 +134,7 @@ class Parser
         } else {
             $gender = $this->idNumber{14};
         }
-        return $gender;
-    }
-    
-    /**
-     * 获取性别
-     * @return string
-     */
-    public function getGenderLabel()
-    {
-        $gender = $this->getGender();
-        return $gender % 2 == 0 ? '女' : '男';
+        return $gender % 2 == 0 ? self::GENDER_FEMALE : self::GENDER_MALE;
     }
     
     public function getRegion()
