@@ -23,3 +23,6 @@ extras/documentation
 .buildpath
 .project
 .settings
+
+#phpstorm
+.idea
