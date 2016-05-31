@@ -67,7 +67,7 @@ class Parser
     public function setId($id)
     {
         if (!$id) {
-            throw new \Exception('param $id must not be null.');
+            throw new \Exception('param "id" must not be null.');
         }
         if (!is_string($id)) {
             throw new \Exception('the type of param $id must be string.');
