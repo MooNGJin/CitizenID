@@ -1,5 +1,7 @@
 <?php
 
+include __DIR__ . '/../vendor/autoload.php';
+
 class ParserTest extends PHPUnit_Framework_TestCase
 {
     protected $parser;
