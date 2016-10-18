@@ -53,11 +53,6 @@ class Parser
      * @var array 校验码
      */
     protected $checksum = [1, 0, 'X', 9, 8, 7, 6, 5, 4, 3, 2];
-    
-    public function __construct()
-    {
-        $this->cityCode = include (__DIR__ . '/CityCode.php');
-    }
 
     /**
      * 
@@ -96,8 +91,7 @@ class Parser
             throw new \Exception('Id number must be set.');
         }
         
-        if ($this->checkFormat() 
-            && $this->checkCitycode() 
+        if ($this->checkFormat()
             && $this->checkBirthday() 
             && $this->checkLastCode()) {
             $this->isValidate = true;
@@ -135,38 +129,6 @@ class Parser
             $gender = $this->idNumber{14};
         }
         return $gender % 2 == 0 ? self::GENDER_FEMALE : self::GENDER_MALE;
-    }
-    
-    public function getRegion()
-    {
-        $province = substr($this->idNumber, 0, 2);
-        $city = substr($this->idNumber, 0, 4);
-        $district = substr($this->idNumber, 0, 6);
-        $region['provice'] = $this->getRegionByLevel($province);
-        $region['city'] = substr($this->getRegionByLevel($city), strlen($region['provice']) -1);
-        $region['complete'] = $this->getRegionByLevel($district);
-        $region['district'] = substr($region['complete'], strlen($region['city']) -1);
-        return $region;
-    }
-    
-    protected function getRegionByLevel($code)
-    {
-        $code = str_pad($code, 6, 0);
-        return isset($this->cityCode[$code]) ? $this->cityCode[$code] : null;
-    }
-
-    /**
-     * 检查前6位的地区码是否存在
-     * 
-     * @return boolean
-     */
-    protected function checkCitycode()
-    {
-        $city = substr($this->idNumber, 0, 6);
-        if (empty($this->cityCode[$city])) {
-            return false;
-        }
-        return true;
     }
 
     /**
