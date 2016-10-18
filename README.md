@@ -23,6 +23,4 @@ $parser->getBirthday();
 //获取性别, 1-男， 0-女，对应的常量为Parser::GENDER_MALE, Parser::FEMALE
 $parser->getGender()
     
-//获取行政区域,返回数组包含省，市，县，完整区域
-$parser->getRegion();
 ```	
