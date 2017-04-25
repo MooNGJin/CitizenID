@@ -9,7 +9,7 @@
 ===
 
 ```php
-use cszchen\citizenid;
+use cszchen\citizenid\Parser;
     
 $parser = new Parser();
 $parser->setId($id);
